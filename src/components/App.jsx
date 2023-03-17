@@ -1,22 +1,21 @@
-import { Sidebar, Main, Paper } from '../components';
+import { Sidebar, Main, Paper, UniversityCard } from '../components';
+import universityData from '../constants/universityData.json';
 
 const App = () => {
+  const onEdit = () => console.log('edit');
+  const onDelete = () => console.log('delete');
+
   return (
     <div className="app">
       <Sidebar />
 
       <Main>
-        <Paper>MIT</Paper>
-        <Paper>
-          Опыт, концентрат знаний и возможность избежать большинство ошибок при
-          приеме на работу. Мы знаем, что хотят большинство локальных и
-          иностранных компаний и можем вам это дать. А еще мы постоянно
-          совершенствуем наши курсы программирования, добавляя туда что-то
-          новое. Вы можете лично ознакомиться с историями успеха наших
-          выпускников, чтобы убедиться в эффективности нашей методики обучения.
-          Да, мы начнем с азов и самой простой информации. Знаем, что
-          большинство людей приходят к нам с нулевыми знаниями.
-        </Paper>
+        <UniversityCard
+          name={universityData.name}
+          onDelete={onDelete}
+          onEdit={onEdit}
+        />
+        <Paper>{universityData.description}</Paper>
       </Main>
     </div>
   );
