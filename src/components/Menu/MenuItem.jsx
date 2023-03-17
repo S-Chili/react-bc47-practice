@@ -1,13 +1,13 @@
-
+import { Item,Link } from "./MenuItem.styled";
 
 function MenuItem({title, link, image}){
     return(
-        <li>
-            <a href={link}>
+        <Item>
+            <Link href={link}>
               <img src={image} alt={title} />
               {title}
-            </a>
-        </li>
+            </Link>
+        </Item>
     )
 }
 
