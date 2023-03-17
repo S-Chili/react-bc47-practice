@@ -8,7 +8,7 @@ function Sidebar() {
       <MenuList />
 
       <div>
-        <img src={userImg} alt="picture" />
+        <img src={userImg} alt="userIcon" />
         <p>Bill Biden</p>
       </div>
     </aside>
