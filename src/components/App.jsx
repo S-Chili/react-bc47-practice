@@ -1,4 +1,5 @@
-import { Sidebar, Main, Paper, UniversityCard } from '../components';
+
+import { Sidebar, Main, Paper, UniversityCard, TutorList } from '../components';
 import universityData from '../constants/universityData.json';
 
 const App = () => {
@@ -15,7 +16,10 @@ const App = () => {
           onDelete={onDelete}
           onEdit={onEdit}
         />
+        
         <Paper>{universityData.description}</Paper>
+        <TutorList 
+        tutors = {universityData.tutors}/>
       </Main>
     </div>
   );

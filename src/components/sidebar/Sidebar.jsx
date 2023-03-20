@@ -1,6 +1,6 @@
 import MenuList from 'components/Menu/Menu';
-import userImg from '../../assets/images/mock-user-ava.svg';
 import { InnerContainer,UserWrap,Logo } from './Sidebar.styled';
+import { FaUserCircle } from 'react-icons/fa'
 
 function Sidebar() {
   return (
@@ -10,7 +10,7 @@ function Sidebar() {
       <MenuList />
 
       <UserWrap>
-        <img src={userImg} alt="userIcon" />
+        <FaUserCircle color={'#FF6B0A'} size={25}/>
         <p>Bill Biden</p>
       </UserWrap>
       </InnerContainer>
