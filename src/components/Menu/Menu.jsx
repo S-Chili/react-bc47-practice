@@ -1,6 +1,7 @@
 import { menuConfig } from 'constants/menu';
 import MenuItem from './MenuItem';
 
+
 function MenuList() {
   return (
     <nav>
@@ -14,3 +15,5 @@ function MenuList() {
 }
 
 export default MenuList;
+
+
