@@ -3,7 +3,6 @@ import { Paper } from "components";
 import  TutorItem  from "./TutorItem";
 
 const TutorList = ({tutors}) => {
-    console.log(tutors);
     return(
         tutors.map((tutor) => 
                 <TutorItem

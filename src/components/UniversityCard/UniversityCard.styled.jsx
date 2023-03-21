@@ -33,6 +33,8 @@ export const Btn = styled.button`
   width: 17px;
   height: 17px;
   border: none;
+  padding: 0;
+  background-color: transparent;
 `;
 
 export const Controls = styled.div`
