@@ -7,7 +7,8 @@ import {
   TutorList,
   Section,
   GeneralCardList,
-  Button
+  Button,
+  TutorForm
 } from '../components';
 import universityData from '../constants/universityData.json';
 import TutorIcon from '../assets/images/teachers-emoji.png'
@@ -27,10 +28,12 @@ class App extends Component {
 
   onEdit = () => console.log('edit');
   onDelete = () => console.log('delete');
-
+  addTutor = (tutor) => this.setState(({ tutors }) => { return { tutors: [...tutors, tutor] } });
+ 
 
   render() {
-
+    
+    console.log("state", this.state.tutors)
     return (
       <div className="app">
         <Sidebar />
@@ -46,6 +49,7 @@ class App extends Component {
           </Section>
           <Section title="Преподаватели" image={TutorIcon}>
             <TutorList tutors={this.state.tutors} />
+            <TutorForm addTutor={this.addTutor}/>
             <Button text='Добавить преподавателя' icon type='submit' />
           </Section>
           <Section title="Города" image={PinIcon}>
