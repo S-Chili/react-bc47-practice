@@ -8,7 +8,8 @@ import {
   Section,
   GeneralCardList,
   Button,
-  TutorForm
+  TutorForm,
+  InfoForm
 } from '../components';
 import universityData from '../constants/universityData.json';
 import TutorIcon from '../assets/images/teachers-emoji.png'
@@ -29,10 +30,16 @@ class App extends Component {
   onEdit = () => console.log('edit');
   onDelete = () => console.log('delete');
   addTutor = (tutor) => this.setState(({ tutors }) => { return { tutors: [...tutors, tutor] } });
- 
 
+  deleteTutor = (name) => {
+    this.setState(({ tutors }) => {
+      return {
+        tutors: tutors.filter(({ firstName }) => firstName !== name)
+      }
+    })
+  }
   render() {
-    
+
     console.log("state", this.state.tutors)
     return (
       <div className="app">
@@ -48,17 +55,19 @@ class App extends Component {
             <Paper>{universityData.description}</Paper>
           </Section>
           <Section title="Преподаватели" image={TutorIcon}>
-            <TutorList tutors={this.state.tutors} />
-            <TutorForm addTutor={this.addTutor}/>
+            <TutorList tutors={this.state.tutors} deleteTutor={this.deleteTutor} />
+            <TutorForm addTutor={this.addTutor} />
             <Button text='Добавить преподавателя' icon type='submit' />
           </Section>
           <Section title="Города" image={PinIcon}>
             <GeneralCardList isOpenDropdown={this.handleToggleDropdown} listData={this.state.cities} />
+            <InfoForm title="Добавление города" placeholder="Город" />
             <Button text='Добавить город' icon />
 
           </Section>
           <Section title="Факультеты" image={DepartmentIcon}>
             <GeneralCardList isOpenDropdown={this.handleToggleDropdown} listData={this.state.departments} />
+            <InfoForm title="Добавление филиала" placeholder="Филиал" />
             <Button text='Добавить факультет' icon />
           </Section>
         </Main>
