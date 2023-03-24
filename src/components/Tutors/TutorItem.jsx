@@ -10,6 +10,7 @@ const TutorItem = ({
   email,
   city,
   options,
+  deleteTutor
 }) => {
   return (
     <Paper>
@@ -18,6 +19,7 @@ const TutorItem = ({
           <span>{lastName}</span>
           <span>{firstName}</span>
           <span>{patronymic}</span>
+
         </ColumnItem>
         <ColumnItem>
           <span>{phone}</span>
@@ -27,6 +29,9 @@ const TutorItem = ({
         <ColumnItem>
           <p>{options}</p>
         </ColumnItem>
+        <ColumnItem>
+          <button type="button" onClick={() => deleteTutor(firstName)}>delete</button>
+        </ColumnItem>
       </Container>
     </Paper>
   );
@@ -35,11 +40,11 @@ const TutorItem = ({
 export default TutorItem;
 
 TutorItem.propTypes = {
-    firstName: PT.string.isRequired,
-    lastName: PT.string.isRequired,
-    patronymic: PT.string.isRequired,
-    phone: PT.string.isRequired,
-    email: PT.string.isRequired,
-    city: PT.string.isRequired,
-    options: PT.string,
+  firstName: PT.string.isRequired,
+  lastName: PT.string.isRequired,
+  patronymic: PT.string.isRequired,
+  phone: PT.string.isRequired,
+  email: PT.string.isRequired,
+  city: PT.string.isRequired,
+  options: PT.string,
 }

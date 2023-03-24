@@ -1,15 +1,16 @@
 import PT from 'prop-types';
 import { Paper } from "components";
-import  TutorItem  from "./TutorItem";
+import TutorItem from "./TutorItem";
 
-const TutorList = ({tutors}) => {
-    return(
-        tutors.map((tutor) => 
-                <TutorItem
+const TutorList = ({ tutors, deleteTutor }) => {
+    return (
+        tutors.map((tutor) =>
+            <TutorItem
                 key={tutor.phone}
                 {...tutor}
-                // tutor={tutor}
-                />                   
+                deleteTutor={deleteTutor}
+            // tutor={tutor}
+            />
         )
     )
 }
@@ -17,5 +18,5 @@ const TutorList = ({tutors}) => {
 export default TutorList;
 
 TutorList.propTypes = {
-    tutors: PT.arrayOf(PT.shape({phone: PT.string.isRequired})),
+    tutors: PT.arrayOf(PT.shape({ phone: PT.string.isRequired })),
 }
