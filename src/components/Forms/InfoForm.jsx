@@ -3,7 +3,7 @@ import { object, string } from 'yup';
 import { Button } from 'components';
 
 
-const InfoForm = ({ placeholder, title }) => {
+const InfoForm = ({ placeholder, title, addNewValue}) => {
     const initialValues = {
         name: ''
     }
@@ -12,7 +12,9 @@ const InfoForm = ({ placeholder, title }) => {
     })
     const handleSubmitForm = (values, { resetForm }) => {
         console.log(values);
+        addNewValue(values.name);
         resetForm();
+    
     }
     return (
         <Formik initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema}>
@@ -36,7 +38,7 @@ const InfoForm = ({ placeholder, title }) => {
 
                     />
                     <ErrorMessage component='div' name="name" />
-                    <Button type="submit" text={'Пригласить'} />
+                    <Button type="submit" text={'Добавить'} />
                 </Form>
             )
             }
