@@ -19,14 +19,17 @@ import FORMS from 'constants/forms';
 
 class App extends Component {
   state = {
-    cities: universityData.cities.map(city => ({ text: city })) ?? [],
+    cities: universityData.cities.map(city => ({ text: city, relation: 'cities' })) ?? [],
     departments:
-      universityData.department.map(({ name }) => ({ text: name })) ?? [],
+      universityData.department.map(({ name }) => ({ text: name, relation: 'departments' })) ?? [],
     tutors: universityData.tutors ?? [],
     formIsOpen: null,
   };
 
-  handleToggleDropdown = () => console.log('click');
+  handleDeleteCard = (id, relation) => {
+    this.setState(prev => ({ [relation]: prev[relation].filter(({ text }) => text !== id) }))
+  };
+
 
   onEdit = () => console.log('edit');
   onDelete = () => console.log('delete');
@@ -105,7 +108,7 @@ class App extends Component {
           </Section>
           <Section title="Города" image={PinIcon}>
             <GeneralCardList
-              isOpenDropdown={this.handleToggleDropdown}
+              onDeleteCard={this.handleDeleteCard}
               listData={this.state.cities}
             />
             {this.state.formIsOpen === FORMS.CITY_FORM && (
@@ -123,7 +126,7 @@ class App extends Component {
           </Section>
           <Section title="Факультеты" image={DepartmentIcon}>
             <GeneralCardList
-              isOpenDropdown={this.handleToggleDropdown}
+              onDeleteCard={this.handleDeleteCard}
               listData={this.state.departments}
             />
             {this.state.formIsOpen === FORMS.DEPARTMENT_FORM && (
