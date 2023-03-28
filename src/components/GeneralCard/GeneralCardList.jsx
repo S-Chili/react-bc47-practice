@@ -1,10 +1,10 @@
 import PropTypes from "prop-types"
 import GeneralCardItem from "./GeneralCardItem"
 
-const GeneralCardList = ({listData, isOpenDropdown}) =>{
-    return(
+const GeneralCardList = ({ listData, onDeleteCard }) => {
+    return (
         <ul>
-            {listData.map(({text})=> <GeneralCardItem key={text} text={text} isOpenDropdown={isOpenDropdown} /> )}
+            {listData.map(({ text, relation }) => <GeneralCardItem key={text} id={text} relation={relation} text={text} onDeleteCard={onDeleteCard} />)}
         </ul>
     )
 }
@@ -12,5 +12,5 @@ const GeneralCardList = ({listData, isOpenDropdown}) =>{
 export default GeneralCardList
 
 GeneralCardList.propTypes = {
-    listData:PropTypes.arrayOf(PropTypes.shape({text:PropTypes.string})) ,
+    listData: PropTypes.arrayOf(PropTypes.shape({ text: PropTypes.string })),
 }
