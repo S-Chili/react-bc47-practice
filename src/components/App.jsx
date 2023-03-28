@@ -10,6 +10,7 @@ import {
   Button,
   TutorForm,
   InfoForm,
+  Modal,
 } from '../components';
 import universityData from '../constants/universityData.json';
 import TutorIcon from '../assets/images/teachers-emoji.png';
@@ -19,17 +20,24 @@ import FORMS from 'constants/forms';
 
 class App extends Component {
   state = {
-    cities: universityData.cities.map(city => ({ text: city, relation: 'cities' })) ?? [],
+    cities:
+      universityData.cities.map(city => ({ text: city, relation: 'cities' })) ??
+      [],
     departments:
-      universityData.department.map(({ name }) => ({ text: name, relation: 'departments' })) ?? [],
+      universityData.department.map(({ name }) => ({
+        text: name,
+        relation: 'departments',
+      })) ?? [],
     tutors: universityData.tutors ?? [],
     formIsOpen: null,
+    isModalOpen: null,
   };
 
   handleDeleteCard = (id, relation) => {
-    this.setState(prev => ({ [relation]: prev[relation].filter(({ text }) => text !== id) }))
+    this.setState(prev => ({
+      [relation]: prev[relation].filter(({ text }) => text !== id),
+    }));
   };
-
 
   onEdit = () => console.log('edit');
   onDelete = () => console.log('delete');
@@ -77,6 +85,11 @@ class App extends Component {
       formIsOpen: prev.formIsOpen === formName ? null : formName,
     }));
   };
+
+  handleModalOpen = action => {
+    this.setState({ isModalOpen: action });
+  };
+
   render() {
     return (
       <div className="app">
@@ -110,6 +123,8 @@ class App extends Component {
             <GeneralCardList
               onDeleteCard={this.handleDeleteCard}
               listData={this.state.cities}
+              toggleModal={this.handleModalOpen}
+              modalState={this.state.isModalOpen}
             />
             {this.state.formIsOpen === FORMS.CITY_FORM && (
               <InfoForm
@@ -128,6 +143,8 @@ class App extends Component {
             <GeneralCardList
               onDeleteCard={this.handleDeleteCard}
               listData={this.state.departments}
+              toggleModal={this.handleModalOpen}
+              modalState={this.state.isModalOpen}
             />
             {this.state.formIsOpen === FORMS.DEPARTMENT_FORM && (
               <InfoForm
