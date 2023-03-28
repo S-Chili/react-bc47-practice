@@ -36,6 +36,7 @@ class App extends Component {
   handleDeleteCard = (id, relation) => {
     this.setState(prev => ({
       [relation]: prev[relation].filter(({ text }) => text !== id),
+      isModalOpen: null
     }));
   };
 
@@ -43,7 +44,7 @@ class App extends Component {
   onDelete = () => console.log('delete');
   addTutor = tutor =>
     this.setState(({ tutors }) => {
-      return { tutors: [...tutors, tutor] };
+      return { tutors: [...tutors, tutor], formIsOpen: null };
     });
 
   deleteTutor = name => {
@@ -63,7 +64,7 @@ class App extends Component {
       alert('This city is already exist');
     } else {
       const newCity = { text: name };
-      this.setState(prev => ({ cities: [...prev.cities, newCity] }));
+      this.setState(prev => ({ cities: [...prev.cities, newCity], formIsOpen: null }));
     }
   };
 
@@ -76,7 +77,7 @@ class App extends Component {
       alert('This department is already exist');
     } else {
       const newDep = { text: name };
-      this.setState(prev => ({ departments: [...prev.departments, newDep] }));
+      this.setState(prev => ({ departments: [...prev.departments, newDep], formIsOpen: null }));
     }
   };
 

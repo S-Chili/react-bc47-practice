@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Paper, Modal, Button } from 'components';
+import { Paper } from 'components';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import PropTypes from 'prop-types';
-
 import DropDown from '../DropDown/DropDown';
+import { BtnMenu, Item } from './GeneralCard.styled';
 
 const GeneralCardItem = ({
   text,
@@ -21,28 +21,19 @@ const GeneralCardItem = ({
   return (
     <>
       <Paper>
-        <li>
+        <Item>
           <span>{text}</span>
-          <button onClick={toggleDropDown}>
+          <BtnMenu onClick={toggleDropDown}>
             <BsThreeDotsVertical />
-          </button>
-          <DropDown isOpen={isOpen} toggleModal={toggleModal} />
-          {modalState === 'delete' && (
-            <Modal
+          </BtnMenu>
+          {isOpen &&
+            <DropDown
               toggleModal={toggleModal}
-              title={`Удаление ${
-                relation === 'cities' ? ' города' : 'факультета'
-              }`}
-              children="Будут удалены все материалы и информация об факультете."
-              actions={
-                <>
-                  <Button text="нет" />
-                  <Button text="да" action={() => onDeleteCard(id, relation)} />
-                </>
-              }
-            ></Modal>
-          )}
-        </li>
+              relation={relation}
+              onDeleteCard={() => onDeleteCard(id, relation)}
+              modalState={modalState}
+            />}
+        </Item>
       </Paper>
     </>
   );
