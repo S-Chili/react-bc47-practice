@@ -41,6 +41,17 @@ export default function App() {
     setIsModalOpen(null) }
   };
 
+  const handleEditCard = (data) => {
+    const { id, name, relation } = data;
+    if (relation === 'cities') {
+      const findIndexCities = cities.findIndex(item => item.text === id)
+      setCities(prev => [...prev.slice(0, findIndexCities), {text: name, relation}, ...prev.slice(findIndexCities+1)])
+    } else {
+      const findIndexDepart = departments.findIndex(item => item.text === id)
+      setDepartments(prev => [...prev.slice(0, findIndexDepart), {text: name, relation}, ...prev.slice(findIndexDepart+1)])
+    }
+  }
+
   const onEdit = () => console.log('edit');
   const onDelete = () => console.log('delete');
 
@@ -117,6 +128,7 @@ export default function App() {
         <Section title="Города" image={PinIcon}>
           <GeneralCardList
             onDeleteCard={handleDeleteCard}
+            onEditCard={handleEditCard}
             listData={cities}
             toggleModal={handleModalOpen}
             modalState={isModalOpen}
@@ -125,7 +137,7 @@ export default function App() {
             <InfoForm
               title="Добавление города"
               placeholder="Город"
-              addNewValue={addCity}
+              onSubmit={addCity}
             />
           )}
           <Button
@@ -137,6 +149,7 @@ export default function App() {
         <Section title="Факультеты" image={DepartmentIcon}>
           <GeneralCardList
             onDeleteCard={handleDeleteCard}
+            onEditCard={handleEditCard}
             listData={departments}
             toggleModal={handleModalOpen}
             modalState={isModalOpen}
@@ -145,7 +158,7 @@ export default function App() {
             <InfoForm
               title="Добавление филиала"
               placeholder="Филиал"
-              addNewValue={addDepartment}
+              onSubmit={addDepartment}
             />
           )}
 

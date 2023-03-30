@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import GeneralCardItem from './GeneralCardItem';
 import { List } from './GeneralCard.styled';
 
-const GeneralCardList = ({ listData, onDeleteCard, toggleModal, modalState }) => {
+const GeneralCardList = ({ listData, onDeleteCard, onEditCard, toggleModal, modalState }) => {
     return (
       <List>
         {listData.map(({ text, relation }) => <GeneralCardItem
@@ -11,6 +11,7 @@ const GeneralCardList = ({ listData, onDeleteCard, toggleModal, modalState }) =>
           relation={relation}
           text={text}
           onDeleteCard={onDeleteCard}
+          onEditCard={onEditCard}
           toggleModal={toggleModal}
           modalState={modalState} />)}
       </List>

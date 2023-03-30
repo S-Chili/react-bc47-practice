@@ -3,16 +3,17 @@ import { object, string } from 'yup';
 import { Button } from 'components';
 
 
-const InfoForm = ({ placeholder, title, addNewValue}) => {
+const InfoForm = ({ placeholder, title, onSubmit, idItem, relation }) => {
     const initialValues = {
-        name: ''
+        name: idItem || ''
     }
     const validationSchema = object().shape({
         name: string().required()
     })
     const handleSubmitForm = (values, { resetForm }) => {
         console.log(values);
-        addNewValue(values.name);
+        const data = idItem ? {id: idItem, relation, name: values.name} : values.name; 
+        onSubmit(data);
         resetForm();
     
     }
@@ -38,7 +39,7 @@ const InfoForm = ({ placeholder, title, addNewValue}) => {
 
                     />
                     <ErrorMessage component='div' name="name" />
-                    <Button type="submit" text={'Добавить'} />
+                    <Button type="submit" text={idItem ? 'Сохранить' : 'Добавить'} />
                 </Form>
             )
             }
