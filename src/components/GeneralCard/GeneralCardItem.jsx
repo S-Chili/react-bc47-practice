@@ -11,6 +11,7 @@ const GeneralCardItem = ({
   id,
   relation,
   toggleModal,
+  onEditCard,
   modalState,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,6 +32,8 @@ const GeneralCardItem = ({
               toggleModal={toggleModal}
               relation={relation}
               onDeleteCard={() => onDeleteCard(id, relation)}
+              onEditCard={onEditCard}
+              idItem={id}
               modalState={modalState}
             />}
         </Item>

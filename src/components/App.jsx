@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import {
   Sidebar,
   Main,
@@ -18,153 +18,158 @@ import PinIcon from '../assets/images/cities.svg';
 import DepartmentIcon from '../assets/images/faculties-emoji.png';
 import FORMS from 'constants/forms';
 
-class App extends Component {
-  state = {
-    cities:
-      universityData.cities.map(city => ({ text: city, relation: 'cities' })) ??
-      [],
-    departments:
-      universityData.department.map(({ name }) => ({
-        text: name,
-        relation: 'departments',
-      })) ?? [],
-    tutors: universityData.tutors ?? [],
-    formIsOpen: null,
-    isModalOpen: null,
+export default function App() {
+  const [cities, setCities] = useState(universityData.cities.map(city => ({ text: city, relation: 'cities' })) ??
+  []);
+  const [departments, setDepartments] = useState(universityData.department.map(({ name }) => ({
+    text: name,
+    relation: 'departments',
+  })) ?? []);
+  const [tutors, setTutors] = useState(universityData.tutors ?? []);
+  const [formIsOpen, setFormIsOpen] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(null);
+
+
+  const handleDeleteCard = (id, relation) => {
+    if (relation === 'cities') {
+      const newCityArray = cities.filter(({ text }) => text !== id)
+    setCities(newCityArray)
+    setIsModalOpen(null) } 
+    else {
+      const newDepartmentsArray = departments.filter(({ text }) => text !== id)
+    setDepartments(newDepartmentsArray)
+    setIsModalOpen(null) }
   };
 
-  handleDeleteCard = (id, relation) => {
-    this.setState(prev => ({
-      [relation]: prev[relation].filter(({ text }) => text !== id),
-      isModalOpen: null
-    }));
-  };
+  const handleEditCard = (data) => {
+    const { id, name, relation } = data;
+    if (relation === 'cities') {
+      const findIndexCities = cities.findIndex(item => item.text === id)
+      setCities(prev => [...prev.slice(0, findIndexCities), {text: name, relation}, ...prev.slice(findIndexCities+1)])
+    } else {
+      const findIndexDepart = departments.findIndex(item => item.text === id)
+      setDepartments(prev => [...prev.slice(0, findIndexDepart), {text: name, relation}, ...prev.slice(findIndexDepart+1)])
+    }
+  }
 
-  onEdit = () => console.log('edit');
-  onDelete = () => console.log('delete');
-  addTutor = tutor =>
-    this.setState(({ tutors }) => {
-      return { tutors: [...tutors, tutor], formIsOpen: null };
-    });
+  const onEdit = () => console.log('edit');
+  const onDelete = () => console.log('delete');
 
-  deleteTutor = name => {
-    this.setState(({ tutors }) => {
-      return {
-        tutors: tutors.filter(({ firstName }) => firstName !== name),
-      };
-    });
-  };
+  const addTutor = tutor => {
+  setTutors([...tutors, tutor])
+  setFormIsOpen(null)
+  }
 
-  addCity = name => {
+  const deleteTutor = name => {
+    setTutors([...tutors.filter(({ firstName }) => firstName !== name)])
+  }
+
+  const addCity = name => {
     if (
-      this.state.cities.some(
-        city => city.text.toLowerCase() === name.toLowerCase()
-      )
+      cities.some(city => city.text.toLowerCase() === name.toLowerCase())
     ) {
       alert('This city is already exist');
     } else {
-      const newCity = { text: name };
-      this.setState(prev => ({ cities: [...prev.cities, newCity], formIsOpen: null }));
-    }
-  };
-
-  addDepartment = name => {
+      const newCity = { text: name, relation: 'cities' } 
+      setCities([...cities, newCity])
+      setFormIsOpen(null)
+  }
+}
+  const addDepartment = name => {
     if (
-      this.state.departments.some(
+      departments.some(
         department => department.text.toLowerCase() === name.toLowerCase()
       )
     ) {
       alert('This department is already exist');
     } else {
-      const newDep = { text: name };
-      this.setState(prev => ({ departments: [...prev.departments, newDep], formIsOpen: null }));
+      const newDep = { text: name, relation: 'departments' };
+      setDepartments([...departments, newDep])
+      setFormIsOpen(null)
     }
-  };
-
-  handleFormShow = formName => {
-    this.setState(prev => ({
-      formIsOpen: prev.formIsOpen === formName ? null : formName,
-    }));
-  };
-
-  handleModalOpen = action => {
-    this.setState({ isModalOpen: action });
-  };
-
-  render() {
-    return (
-      <div className="app">
-        <Sidebar />
-
-        <Main>
-          <Section title="Информация о университете" isRightPosition isRow>
-            <UniversityCard
-              name={universityData.name}
-              onDelete={this.onDelete}
-              onEdit={this.onEdit}
-            />
-            <Paper>{universityData.description}</Paper>
-          </Section>
-          <Section title="Преподаватели" image={TutorIcon}>
-            <TutorList
-              tutors={this.state.tutors}
-              deleteTutor={this.deleteTutor}
-            />
-            {this.state.formIsOpen === FORMS.TUTOR_FORM && (
-              <TutorForm addTutor={this.addTutor} />
-            )}
-            <Button
-              text="Добавить преподавателя"
-              icon
-              type="submit"
-              action={() => this.handleFormShow(FORMS.TUTOR_FORM)}
-            />
-          </Section>
-          <Section title="Города" image={PinIcon}>
-            <GeneralCardList
-              onDeleteCard={this.handleDeleteCard}
-              listData={this.state.cities}
-              toggleModal={this.handleModalOpen}
-              modalState={this.state.isModalOpen}
-            />
-            {this.state.formIsOpen === FORMS.CITY_FORM && (
-              <InfoForm
-                title="Добавление города"
-                placeholder="Город"
-                addNewValue={this.addCity}
-              />
-            )}
-            <Button
-              text="Добавить город"
-              icon
-              action={() => this.handleFormShow(FORMS.CITY_FORM)}
-            />
-          </Section>
-          <Section title="Факультеты" image={DepartmentIcon}>
-            <GeneralCardList
-              onDeleteCard={this.handleDeleteCard}
-              listData={this.state.departments}
-              toggleModal={this.handleModalOpen}
-              modalState={this.state.isModalOpen}
-            />
-            {this.state.formIsOpen === FORMS.DEPARTMENT_FORM && (
-              <InfoForm
-                title="Добавление филиала"
-                placeholder="Филиал"
-                addNewValue={this.addDepartment}
-              />
-            )}
-
-            <Button
-              text="Добавить факультет"
-              icon
-              action={() => this.handleFormShow(FORMS.DEPARTMENT_FORM)}
-            />
-          </Section>
-        </Main>
-      </div>
-    );
   }
+
+    const handleFormShow = formName => {
+      setFormIsOpen(formIsOpen === formName ? null : formName)
+    }
+
+    const handleModalOpen = action => {
+      setIsModalOpen(isModalOpen === action ? null : action)
+    }
+  
+  return (
+    <div className="app">
+      <Sidebar />
+
+      <Main>
+        <Section title="Информация о университете" isRightPosition isRow>
+          <UniversityCard
+            name={universityData.name}
+            onDelete={onDelete}
+            onEdit={onEdit}
+          />
+          <Paper>{universityData.description}</Paper>
+        </Section>
+        <Section title="Преподаватели" image={TutorIcon}>
+          <TutorList
+            tutors={tutors}
+            deleteTutor={deleteTutor}
+          />
+          {formIsOpen === FORMS.TUTOR_FORM && (
+            <TutorForm addTutor={addTutor} />
+          )}
+          <Button
+            text="Добавить преподавателя"
+            icon
+            type="submit"
+            action={() => handleFormShow(FORMS.TUTOR_FORM)}
+          />
+        </Section>
+        <Section title="Города" image={PinIcon}>
+          <GeneralCardList
+            onDeleteCard={handleDeleteCard}
+            onEditCard={handleEditCard}
+            listData={cities}
+            toggleModal={handleModalOpen}
+            modalState={isModalOpen}
+          />
+          {formIsOpen === FORMS.CITY_FORM && (
+            <InfoForm
+              title="Добавление города"
+              placeholder="Город"
+              onSubmit={addCity}
+            />
+          )}
+          <Button
+            text="Добавить город"
+            icon
+            action={() => handleFormShow(FORMS.CITY_FORM)}
+          />
+        </Section>
+        <Section title="Факультеты" image={DepartmentIcon}>
+          <GeneralCardList
+            onDeleteCard={handleDeleteCard}
+            onEditCard={handleEditCard}
+            listData={departments}
+            toggleModal={handleModalOpen}
+            modalState={isModalOpen}
+          />
+          {formIsOpen === FORMS.DEPARTMENT_FORM && (
+            <InfoForm
+              title="Добавление филиала"
+              placeholder="Филиал"
+              onSubmit={addDepartment}
+            />
+          )}
+
+          <Button
+            text="Добавить факультет"
+            icon
+            action={() => handleFormShow(FORMS.DEPARTMENT_FORM)}
+          />
+        </Section>
+      </Main>
+    </div>
+  );
 }
 
-export default App;
