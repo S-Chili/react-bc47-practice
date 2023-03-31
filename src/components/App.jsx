@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Sidebar,
   Main,
@@ -17,64 +17,74 @@ import TutorIcon from '../assets/images/teachers-emoji.png';
 import PinIcon from '../assets/images/cities.svg';
 import DepartmentIcon from '../assets/images/faculties-emoji.png';
 import FORMS from 'constants/forms';
+import axios from 'axios';
+import useCities from '../hooks/useCities';
+import useDepartments from 'hooks/useDepartments';
+import useTutors from '../hooks/useTutors';
+
+const BASE_URL = 'https://6426c5d0556bad2a5b579e63.mockapi.io';
+axios.defaults.baseURL = BASE_URL;
 
 export default function App() {
-  const [cities, setCities] = useState(universityData.cities.map(city => ({ text: city, relation: 'cities' })) ??
-  []);
-  const [departments, setDepartments] = useState(universityData.department.map(({ name }) => ({
-    text: name,
-    relation: 'departments',
-  })) ?? []);
-  const [tutors, setTutors] = useState(universityData.tutors ?? []);
+  const [cities, setCities] = useCities();
+  const [departments, setDepartments] = useDepartments();
+
+  const [tutors, setTutors] = useTutors();
   const [formIsOpen, setFormIsOpen] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(null);
 
-
   const handleDeleteCard = (id, relation) => {
     if (relation === 'cities') {
-      const newCityArray = cities.filter(({ text }) => text !== id)
-    setCities(newCityArray)
-    setIsModalOpen(null) } 
-    else {
-      const newDepartmentsArray = departments.filter(({ text }) => text !== id)
-    setDepartments(newDepartmentsArray)
-    setIsModalOpen(null) }
+      const newCityArray = cities.filter(({ text }) => text !== id);
+      setCities(newCityArray);
+      setIsModalOpen(null);
+    } else {
+      const newDepartmentsArray = departments.filter(({ text }) => text !== id);
+      setDepartments(newDepartmentsArray);
+      setIsModalOpen(null);
+    }
   };
 
-  const handleEditCard = (data) => {
+  const handleEditCard = data => {
     const { id, name, relation } = data;
     if (relation === 'cities') {
-      const findIndexCities = cities.findIndex(item => item.text === id)
-      setCities(prev => [...prev.slice(0, findIndexCities), {text: name, relation}, ...prev.slice(findIndexCities+1)])
+      const findIndexCities = cities.findIndex(item => item.text === id);
+      setCities(prev => [
+        ...prev.slice(0, findIndexCities),
+        { text: name, relation },
+        ...prev.slice(findIndexCities + 1),
+      ]);
     } else {
-      const findIndexDepart = departments.findIndex(item => item.text === id)
-      setDepartments(prev => [...prev.slice(0, findIndexDepart), {text: name, relation}, ...prev.slice(findIndexDepart+1)])
+      const findIndexDepart = departments.findIndex(item => item.text === id);
+      setDepartments(prev => [
+        ...prev.slice(0, findIndexDepart),
+        { text: name, relation },
+        ...prev.slice(findIndexDepart + 1),
+      ]);
     }
-  }
+  };
 
   const onEdit = () => console.log('edit');
   const onDelete = () => console.log('delete');
 
   const addTutor = tutor => {
-  setTutors([...tutors, tutor])
-  setFormIsOpen(null)
-  }
+    setTutors([...tutors, tutor]);
+    setFormIsOpen(null);
+  };
 
   const deleteTutor = name => {
-    setTutors([...tutors.filter(({ firstName }) => firstName !== name)])
-  }
+    setTutors([...tutors.filter(({ firstName }) => firstName !== name)]);
+  };
 
   const addCity = name => {
-    if (
-      cities.some(city => city.text.toLowerCase() === name.toLowerCase())
-    ) {
+    if (cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
       alert('This city is already exist');
     } else {
-      const newCity = { text: name, relation: 'cities' } 
-      setCities([...cities, newCity])
-      setFormIsOpen(null)
-  }
-}
+      const newCity = { text: name, relation: 'cities' };
+      setCities([...cities, newCity]);
+      setFormIsOpen(null);
+    }
+  };
   const addDepartment = name => {
     if (
       departments.some(
@@ -84,19 +94,19 @@ export default function App() {
       alert('This department is already exist');
     } else {
       const newDep = { text: name, relation: 'departments' };
-      setDepartments([...departments, newDep])
-      setFormIsOpen(null)
+      setDepartments([...departments, newDep]);
+      setFormIsOpen(null);
     }
-  }
+  };
 
-    const handleFormShow = formName => {
-      setFormIsOpen(formIsOpen === formName ? null : formName)
-    }
+  const handleFormShow = formName => {
+    setFormIsOpen(formIsOpen === formName ? null : formName);
+  };
 
-    const handleModalOpen = action => {
-      setIsModalOpen(isModalOpen === action ? null : action)
-    }
-  
+  const handleModalOpen = action => {
+    setIsModalOpen(isModalOpen === action ? null : action);
+  };
+
   return (
     <div className="app">
       <Sidebar />
@@ -111,13 +121,8 @@ export default function App() {
           <Paper>{universityData.description}</Paper>
         </Section>
         <Section title="Преподаватели" image={TutorIcon}>
-          <TutorList
-            tutors={tutors}
-            deleteTutor={deleteTutor}
-          />
-          {formIsOpen === FORMS.TUTOR_FORM && (
-            <TutorForm addTutor={addTutor} />
-          )}
+          <TutorList tutors={tutors} deleteTutor={deleteTutor} />
+          {formIsOpen === FORMS.TUTOR_FORM && <TutorForm addTutor={addTutor} />}
           <Button
             text="Добавить преподавателя"
             icon
@@ -172,4 +177,3 @@ export default function App() {
     </div>
   );
 }
-
