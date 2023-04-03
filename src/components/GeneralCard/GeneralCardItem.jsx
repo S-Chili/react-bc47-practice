@@ -35,6 +35,7 @@ const GeneralCardItem = ({
               onEditCard={onEditCard}
               idItem={id}
               modalState={modalState}
+              textItem={text}
             />}
         </Item>
       </Paper>

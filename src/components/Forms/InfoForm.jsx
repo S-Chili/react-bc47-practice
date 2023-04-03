@@ -3,19 +3,19 @@ import { object, string } from 'yup';
 import { Button } from 'components';
 
 
-const InfoForm = ({ placeholder, title, onSubmit, idItem, relation }) => {
+const InfoForm = ({ placeholder, title, onSubmit, idItem, textItem, relation }) => {
     const initialValues = {
-        name: idItem || ''
+        name: textItem || ''
     }
     const validationSchema = object().shape({
         name: string().required()
     })
     const handleSubmitForm = (values, { resetForm }) => {
         console.log(values);
-        const data = idItem ? {id: idItem, relation, name: values.name} : values.name; 
+        const data = idItem ? { id: idItem, relation, name: values.name } : values.name;
         onSubmit(data);
         resetForm();
-    
+
     }
     return (
         <Formik initialValues={initialValues} onSubmit={handleSubmitForm} validationSchema={validationSchema}>

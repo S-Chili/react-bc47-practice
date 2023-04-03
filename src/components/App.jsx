@@ -21,9 +21,10 @@ import axios from 'axios';
 import useCities from '../hooks/useCities';
 import useDepartments from 'hooks/useDepartments';
 import useTutors from '../hooks/useTutors';
+import { postCity, deleteCity, updateCity } from 'Api/citiesApi';
+import { postDepartment, deleteDepartment, updateDepartment } from 'Api/departments';
 
-const BASE_URL = 'https://6426c5d0556bad2a5b579e63.mockapi.io';
-axios.defaults.baseURL = BASE_URL;
+
 
 export default function App() {
   const [cities, setCities] = useCities();
@@ -34,33 +35,48 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(null);
 
   const handleDeleteCard = (id, relation) => {
+
     if (relation === 'cities') {
-      const newCityArray = cities.filter(({ text }) => text !== id);
-      setCities(newCityArray);
-      setIsModalOpen(null);
+      deleteCity(id).then(res => {
+        const newCityArray = cities.filter(({ id }) => id !== res.data.id);
+        setCities(newCityArray);
+        setIsModalOpen(null);
+      })
+
     } else {
-      const newDepartmentsArray = departments.filter(({ text }) => text !== id);
-      setDepartments(newDepartmentsArray);
-      setIsModalOpen(null);
+      deleteDepartment(id).then(res => {
+        const newDepartmentsArray = departments.filter(({ id }) => id !== res.data.id);
+        setDepartments(newDepartmentsArray);
+        setIsModalOpen(null);
+      })
+
     }
   };
 
   const handleEditCard = data => {
     const { id, name, relation } = data;
     if (relation === 'cities') {
-      const findIndexCities = cities.findIndex(item => item.text === id);
-      setCities(prev => [
-        ...prev.slice(0, findIndexCities),
-        { text: name, relation },
-        ...prev.slice(findIndexCities + 1),
-      ]);
+
+      updateCity(id, { id, text: name }).then(res => {
+        const findIndexCities = cities.findIndex(item => item.id === res.data.id);
+        setCities(prev => [
+          ...prev.slice(0, findIndexCities),
+          { text: res.data.text, relation, id: res.data.id },
+          ...prev.slice(findIndexCities + 1),
+        ]);
+      })
+      setIsModalOpen(null);
+
     } else {
-      const findIndexDepart = departments.findIndex(item => item.text === id);
-      setDepartments(prev => [
-        ...prev.slice(0, findIndexDepart),
-        { text: name, relation },
-        ...prev.slice(findIndexDepart + 1),
-      ]);
+      updateDepartment(id, { id, name }).then(res => {
+        const findIndexDepart = departments.findIndex(item => item.id === res.data.id);
+        setDepartments(prev => [
+          ...prev.slice(0, findIndexDepart),
+          { text: res.data.name, id: res.data.id, relation },
+          ...prev.slice(findIndexDepart + 1),
+        ]);
+      })
+      setIsModalOpen(null);
     }
   };
 
@@ -77,26 +93,32 @@ export default function App() {
   };
 
   const addCity = name => {
-    if (cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
-      alert('This city is already exist');
-    } else {
-      const newCity = { text: name, relation: 'cities' };
-      setCities([...cities, newCity]);
-      setFormIsOpen(null);
-    }
+    postCity({ text: name }).then(({ data }) => {
+      if (cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
+        alert('This city is already exist');
+      } else {
+        const newCity = { ...data, relation: 'cities' };
+        setCities([...cities, newCity]);
+        setFormIsOpen(null);
+      }
+    })
+
   };
   const addDepartment = name => {
-    if (
-      departments.some(
-        department => department.text.toLowerCase() === name.toLowerCase()
-      )
-    ) {
-      alert('This department is already exist');
-    } else {
-      const newDep = { text: name, relation: 'departments' };
-      setDepartments([...departments, newDep]);
-      setFormIsOpen(null);
-    }
+    postDepartment({ name }).then(({ data: { id, name } }) => {
+      if (
+        departments.some(
+          department => department.text.toLowerCase() === name.toLowerCase()
+        )
+      ) {
+        alert('This department is already exist');
+      } else {
+        const newDep = { text: name, id, relation: 'departments' };
+        setDepartments([...departments, newDep]);
+        setFormIsOpen(null);
+      }
+    })
+
   };
 
   const handleFormShow = formName => {

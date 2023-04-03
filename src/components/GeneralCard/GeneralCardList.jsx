@@ -14,7 +14,7 @@ const GeneralCardList = ({
       {listData.map(({ id, text, relation }) => (
         <GeneralCardItem
           key={id}
-          id={text}
+          id={id}
           relation={relation}
           text={text}
           onDeleteCard={onDeleteCard}

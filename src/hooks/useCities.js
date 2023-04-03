@@ -1,13 +1,11 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-
-const BASE_URL = 'https://6426c5d0556bad2a5b579e63.mockapi.io';
-axios.defaults.baseURL = BASE_URL;
+import {getCities} from "../Api/citiesApi"
 
 const useCities = () => {
   const [cities, setCities] = useState([]);
   useEffect(() => {
-    axios.get('/cities').then(({ data }) => {
+    getCities().then(({ data }) => {
       localStorage.setItem(
         'cities',
         JSON.stringify(

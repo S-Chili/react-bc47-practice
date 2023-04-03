@@ -1,13 +1,10 @@
-import axios from 'axios';
+import { getDepatments } from 'Api/departments';
 import { useState, useEffect } from 'react';
-
-const BASE_URL = 'https://6426c5d0556bad2a5b579e63.mockapi.io';
-axios.defaults.baseURL = BASE_URL;
 
 const useDepartments = () => {
   const [departments, setDepartments] = useState([]);
   useEffect(() => {
-    axios.get('/departments').then(({ data }) => {
+    getDepatments().then(({ data }) => {
       localStorage.setItem(
         'departments',
         JSON.stringify(
