@@ -3,7 +3,7 @@ import { ReactComponent as Delete } from '../../assets/images/delete.svg';
 import { Button, InfoForm, Modal } from '../index';
 import { ContainerDropdown, Btn, ActionsBtn } from './Dropdown.styled';
 
-const DropDown = ({ toggleModal, relation, onDeleteCard, onEditCard, modalState, idItem }) => {
+const DropDown = ({ toggleModal, relation, onDeleteCard, onEditCard, modalState, idItem, textItem }) => {
   return (
     <ContainerDropdown>
       <Btn type='button' onClick={() => toggleModal('edit')}><Edit />редактировать</Btn>
@@ -11,7 +11,7 @@ const DropDown = ({ toggleModal, relation, onDeleteCard, onEditCard, modalState,
         <Modal
           toggleModal={toggleModal}
           title={`Редактировать информацию  ${relation === 'cities' ? 'о городе' : 'об факультете'} `}
-          children={<InfoForm idItem={idItem} relation={relation} onSubmit={onEditCard} title={relation === 'cities' ? 'Город' : 'Факультет'} />}
+          children={<InfoForm idItem={idItem} textItem={textItem} relation={relation} onSubmit={onEditCard} title={relation === 'cities' ? 'Город' : 'Факультет'} />}
         />
       )}
       <Btn type='button' onClick={() => toggleModal('delete')}><Delete />удалить</Btn>
@@ -28,7 +28,7 @@ const DropDown = ({ toggleModal, relation, onDeleteCard, onEditCard, modalState,
           }
         />
       )}
-    </ContainerDropdown> );
+    </ContainerDropdown>);
 
 };
 
