@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import DropDown from '../DropDown/DropDown';
 import { BtnMenu, Item } from './GeneralCard.styled';
-
+import { useNavigate } from 'react-router-dom';
 const GeneralCardItem = ({
   text,
   onDeleteCard,
@@ -16,6 +16,12 @@ const GeneralCardItem = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const navigate = useNavigate();
+  const pathTo = () => {
+    if (relation !== 'departments') return;
+      navigate(`/departments/${id}`);
+  }
+
   const toggleDropDown = () => {
     setIsOpen(!isOpen);
   };
@@ -23,11 +29,11 @@ const GeneralCardItem = ({
     <>
       <Paper>
         <Item>
-          <span>{text}</span>
+          <span onClick={pathTo}>{text}</span>
           <BtnMenu onClick={toggleDropDown}>
             <BsThreeDotsVertical />
           </BtnMenu>
-          {isOpen &&
+          {isOpen && (
             <DropDown
               toggleModal={toggleModal}
               relation={relation}
@@ -36,7 +42,8 @@ const GeneralCardItem = ({
               idItem={id}
               modalState={modalState}
               textItem={text}
-            />}
+            />
+          )}
         </Item>
       </Paper>
     </>

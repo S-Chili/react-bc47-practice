@@ -4,7 +4,7 @@ import { Item,Link } from "./MenuItem.styled";
 function MenuItem({title, link, image}){
     return(
         <Item>
-            <Link href={link}>
+            <Link to={link}>
               {image}
               {title}
             </Link>
