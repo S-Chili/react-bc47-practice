@@ -1,10 +1,11 @@
 import styled from "@emotion/styled";
+import { NavLink } from "react-router-dom";
 
 export const Item = styled.li`
 padding: 10px 0; 
 `
 
-export const Link = styled.a`
+export const Link = styled(NavLink)`
 font-family: 'Montserrat';
 font-weight: 700;
 font-size: 14px;

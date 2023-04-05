@@ -1,30 +1,21 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import {
   Sidebar,
   Main,
-  Paper,
-  UniversityCard,
-  TutorList,
-  Section,
-  GeneralCardList,
-  Button,
-  TutorForm,
-  InfoForm,
-  Modal,
+
 } from '../components';
-import universityData from '../constants/universityData.json';
-import TutorIcon from '../assets/images/teachers-emoji.png';
-import PinIcon from '../assets/images/cities.svg';
-import DepartmentIcon from '../assets/images/faculties-emoji.png';
-import FORMS from 'constants/forms';
-import axios from 'axios';
+
 import useCities from '../hooks/useCities';
 import useDepartments from 'hooks/useDepartments';
 import useTutors from '../hooks/useTutors';
 import { postCity, deleteCity, updateCity } from 'Api/citiesApi';
 import { postDepartment, deleteDepartment, updateDepartment } from 'Api/departments';
-
-
+import Departments from 'pages/department/Departments';
+import University from 'pages/university/University';
+import { Route, Routes } from 'react-router-dom';
+import DepartmentDetails from 'pages/department/DepartmentDetails'
+import DepartmentDescription from 'pages/department/DepartmentDescription';
+import DepartmentHistory from 'pages/department/DepartmentHistory';
 
 export default function App() {
   const [cities, setCities] = useCities();
@@ -134,67 +125,64 @@ export default function App() {
       <Sidebar />
 
       <Main>
-        <Section title="Информация о университете" isRightPosition isRow>
-          <UniversityCard
-            name={universityData.name}
-            onDelete={onDelete}
-            onEdit={onEdit}
-          />
-          <Paper>{universityData.description}</Paper>
-        </Section>
-        <Section title="Преподаватели" image={TutorIcon}>
-          <TutorList tutors={tutors} deleteTutor={deleteTutor} />
-          {formIsOpen === FORMS.TUTOR_FORM && <TutorForm addTutor={addTutor} />}
-          <Button
-            text="Добавить преподавателя"
-            icon
-            type="submit"
-            action={() => handleFormShow(FORMS.TUTOR_FORM)}
-          />
-        </Section>
-        <Section title="Города" image={PinIcon}>
-          <GeneralCardList
-            onDeleteCard={handleDeleteCard}
-            onEditCard={handleEditCard}
-            listData={cities}
-            toggleModal={handleModalOpen}
-            modalState={isModalOpen}
-          />
-          {formIsOpen === FORMS.CITY_FORM && (
-            <InfoForm
-              title="Добавление города"
-              placeholder="Город"
-              onSubmit={addCity}
-            />
-          )}
-          <Button
-            text="Добавить город"
-            icon
-            action={() => handleFormShow(FORMS.CITY_FORM)}
-          />
-        </Section>
-        <Section title="Факультеты" image={DepartmentIcon}>
-          <GeneralCardList
-            onDeleteCard={handleDeleteCard}
-            onEditCard={handleEditCard}
-            listData={departments}
-            toggleModal={handleModalOpen}
-            modalState={isModalOpen}
-          />
-          {formIsOpen === FORMS.DEPARTMENT_FORM && (
-            <InfoForm
-              title="Добавление филиала"
-              placeholder="Филиал"
-              onSubmit={addDepartment}
-            />
-          )}
+        <Suspense fallback={<h3>Loading...</h3>}>
+          <Routes>
+            <Route
+              path="/university"
+              element={
+                <University
+                  onDelete={onDelete}
+                  onEdit={onEdit}
+                  tutors={tutors}
+                  deleteTutor={deleteTutor}
+                  formIsOpen={formIsOpen}
+                  addTutor={addTutor}
+                  handleFormShow={handleFormShow}
+                  onDeleteCard={handleDeleteCard}
+                  onEditCard={handleEditCard}
+                  listData={cities}
+                  toggleModal={handleModalOpen}
+                  modalState={isModalOpen}
+                  onSubmit={addCity}
+                />
+              }
+            ></Route>
+            <Route path="/departments">
 
-          <Button
-            text="Добавить факультет"
-            icon
-            action={() => handleFormShow(FORMS.DEPARTMENT_FORM)}
-          />
-        </Section>
+              <Route
+                index
+                element={
+                  <Departments
+                    onDeleteCard={handleDeleteCard}
+                    onEditCard={handleEditCard}
+                    listData={departments}
+                    toggleModal={handleModalOpen}
+                    modalState={isModalOpen}
+                    formIsOpen={formIsOpen}
+                    onSubmit={addDepartment}
+                    handleFormShow={handleFormShow}
+                  />
+                }
+              />
+
+              <Route
+                path=":departmentId"
+                element={<DepartmentDetails departments={departments} />}
+              >
+                <Route
+                  path="description"
+                  element={<DepartmentDescription />}
+                ></Route>
+                <Route
+                  path="history"
+                  element={<DepartmentHistory />}>
+
+                  </Route>
+              </Route>
+
+            </Route>
+          </Routes>
+        </Suspense>
       </Main>
     </div>
   );
