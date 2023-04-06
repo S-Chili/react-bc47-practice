@@ -7,7 +7,6 @@ import { BtnMenu, Item } from './GeneralCard.styled';
 import { useNavigate } from 'react-router-dom';
 const GeneralCardItem = ({
   text,
-  onDeleteCard,
   id,
   relation,
   toggleModal,
@@ -37,7 +36,6 @@ const GeneralCardItem = ({
             <DropDown
               toggleModal={toggleModal}
               relation={relation}
-              onDeleteCard={() => onDeleteCard(id, relation)}
               onEditCard={onEditCard}
               idItem={id}
               modalState={modalState}

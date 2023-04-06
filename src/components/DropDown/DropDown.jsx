@@ -2,8 +2,15 @@ import { ReactComponent as Edit } from '../../assets/images/edit.svg';
 import { ReactComponent as Delete } from '../../assets/images/delete.svg';
 import { Button, InfoForm, Modal } from '../index';
 import { ContainerDropdown, Btn, ActionsBtn } from './Dropdown.styled';
+import {useDispatch} from 'react-redux'
+import { deleteCityOperation, editCitiesOperation } from 'store/cities/citiesOperation';
 
-const DropDown = ({ toggleModal, relation, onDeleteCard, onEditCard, modalState, idItem, textItem }) => {
+const DropDown = ({ toggleModal, relation, onEditCard, modalState, idItem, textItem }) => {
+  
+  const dispatch = useDispatch();
+
+
+
   return (
     <ContainerDropdown>
       <Btn type='button' onClick={() => toggleModal('edit')}><Edit />редактировать</Btn>
@@ -11,7 +18,7 @@ const DropDown = ({ toggleModal, relation, onDeleteCard, onEditCard, modalState,
         <Modal
           toggleModal={toggleModal}
           title={`Редактировать информацию  ${relation === 'cities' ? 'о городе' : 'об факультете'} `}
-          children={<InfoForm idItem={idItem} textItem={textItem} relation={relation} onSubmit={onEditCard} title={relation === 'cities' ? 'Город' : 'Факультет'} />}
+          children={<InfoForm idItem={idItem} textItem={textItem} relation={relation} onSubmit={editCitiesOperation} title={relation === 'cities' ? 'Город' : 'Факультет'} />}
         />
       )}
       <Btn type='button' onClick={() => toggleModal('delete')}><Delete />удалить</Btn>
@@ -23,7 +30,7 @@ const DropDown = ({ toggleModal, relation, onDeleteCard, onEditCard, modalState,
           actions={
             <ActionsBtn>
               <Button text='нет' action={toggleModal} />
-              <Button text='да' action={onDeleteCard} />
+              <Button text='да' action={()=> {relation === 'cities' ? dispatch(deleteCityOperation(idItem)) : console.log('department');}}  />
             </ActionsBtn>
           }
         />

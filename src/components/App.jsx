@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import {
   Sidebar,
   Main,
@@ -12,7 +12,7 @@ import { postCity, deleteCity, updateCity } from 'Api/citiesApi';
 import { postDepartment, deleteDepartment, updateDepartment } from 'Api/departments';
 import Departments from 'pages/department/Departments';
 import University from 'pages/university/University';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import DepartmentDetails from 'pages/department/DepartmentDetails'
 import DepartmentDescription from 'pages/department/DepartmentDescription';
 import DepartmentHistory from 'pages/department/DepartmentHistory';
@@ -25,24 +25,13 @@ export default function App() {
   const [formIsOpen, setFormIsOpen] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(null);
 
-  const handleDeleteCard = (id, relation) => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-    if (relation === 'cities') {
-      deleteCity(id).then(res => {
-        const newCityArray = cities.filter(({ id }) => id !== res.data.id);
-        setCities(newCityArray);
-        setIsModalOpen(null);
-      })
+  useEffect(() => {
+    if (pathname === '/' || pathname === '/react-homework-template') navigate('university') 
+  }, [navigate, pathname])
 
-    } else {
-      deleteDepartment(id).then(res => {
-        const newDepartmentsArray = departments.filter(({ id }) => id !== res.data.id);
-        setDepartments(newDepartmentsArray);
-        setIsModalOpen(null);
-      })
-
-    }
-  };
 
   const handleEditCard = data => {
     const { id, name, relation } = data;
@@ -138,7 +127,6 @@ export default function App() {
                   formIsOpen={formIsOpen}
                   addTutor={addTutor}
                   handleFormShow={handleFormShow}
-                  onDeleteCard={handleDeleteCard}
                   onEditCard={handleEditCard}
                   listData={cities}
                   toggleModal={handleModalOpen}
@@ -153,7 +141,6 @@ export default function App() {
                 index
                 element={
                   <Departments
-                    onDeleteCard={handleDeleteCard}
                     onEditCard={handleEditCard}
                     listData={departments}
                     toggleModal={handleModalOpen}
