@@ -13,6 +13,9 @@ import universityData from '../../constants/universityData.json';
 import TutorIcon from '../../assets/images/teachers-emoji.png';
 import FORMS from 'constants/forms';
 import PinIcon from '../../assets/images/cities.svg';
+import { addCitiesOperation, fetchCities } from 'store/cities/citiesOperation';
+import {useDispatch, useSelector} from 'react-redux'
+import { useEffect } from 'react';
 
 const University = ({
   onDelete,
@@ -22,13 +25,20 @@ const University = ({
   formIsOpen,
   addTutor,
   handleFormShow,
-  onDeleteCard,
   onEditCard,
-  listData,
   toggleModal,
   modalState,
   onSubmit,
 }) => {
+
+  const dispatch = useDispatch();
+
+  const cities = useSelector(state => state.cities.items)
+
+  useEffect(() => {
+    dispatch(fetchCities())
+  }, [dispatch]);
+
   return (
     <>
       <Section title="Информация о университете" isRightPosition isRow>
@@ -51,9 +61,8 @@ const University = ({
       </Section>
       <Section title="Города" image={PinIcon}>
         <GeneralCardList
-          onDeleteCard={onDeleteCard}
           onEditCard={onEditCard}
-          listData={listData}
+          listData={cities}
           toggleModal={toggleModal}
           modalState={modalState}
         />
@@ -61,7 +70,7 @@ const University = ({
           <InfoForm
             title="Добавление города"
             placeholder="Город"
-            onSubmit={onSubmit}
+            onSubmit={addCitiesOperation}
           />
         )}
         <Button

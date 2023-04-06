@@ -1,9 +1,12 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { object, string } from 'yup';
 import { Button } from 'components';
+import { useDispatch } from 'react-redux'
 
 
 const InfoForm = ({ placeholder, title, onSubmit, idItem, textItem, relation }) => {
+    const dispatch = useDispatch();
+
     const initialValues = {
         name: textItem || ''
     }
@@ -13,7 +16,7 @@ const InfoForm = ({ placeholder, title, onSubmit, idItem, textItem, relation }) 
     const handleSubmitForm = (values, { resetForm }) => {
         console.log(values);
         const data = idItem ? { id: idItem, relation, name: values.name } : values.name;
-        onSubmit(data);
+        dispatch(onSubmit(data))
         resetForm();
 
     }

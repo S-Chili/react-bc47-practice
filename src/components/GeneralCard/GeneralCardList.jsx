@@ -4,7 +4,6 @@ import { List } from './GeneralCard.styled';
 
 const GeneralCardList = ({
   listData,
-  onDeleteCard,
   onEditCard,
   toggleModal,
   modalState,
@@ -17,7 +16,6 @@ const GeneralCardList = ({
           id={id}
           relation={relation}
           text={text}
-          onDeleteCard={onDeleteCard}
           onEditCard={onEditCard}
           toggleModal={toggleModal}
           modalState={modalState}
