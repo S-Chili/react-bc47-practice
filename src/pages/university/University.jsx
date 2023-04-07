@@ -14,7 +14,7 @@ import TutorIcon from '../../assets/images/teachers-emoji.png';
 import FORMS from 'constants/forms';
 import PinIcon from '../../assets/images/cities.svg';
 import { addCitiesOperation, fetchCities } from 'store/cities/citiesOperation';
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react';
 
 const University = ({
@@ -25,10 +25,10 @@ const University = ({
   formIsOpen,
   addTutor,
   handleFormShow,
-  onEditCard,
+
   toggleModal,
   modalState,
-  onSubmit,
+
 }) => {
 
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ const University = ({
       </Section>
       <Section title="Города" image={PinIcon}>
         <GeneralCardList
-          onEditCard={onEditCard}
+
           listData={cities}
           toggleModal={toggleModal}
           modalState={modalState}

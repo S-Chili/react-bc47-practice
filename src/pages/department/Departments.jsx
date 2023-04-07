@@ -1,31 +1,43 @@
 import { Button, Section, GeneralCardList, InfoForm } from 'components';
 import DepartmentIcon from '../../assets/images/faculties-emoji.png';
 import FORMS from 'constants/forms';
+import { fetchDepartments, addDepartmentsOperatiom } from "../../store/departments/departmentsOperation"
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const Departments = ({
-  onDeleteCard,
-  onEditCard,
-  listData,
+
+
+
   toggleModal,
   modalState,
   formIsOpen,
-  onSubmit,
+
   handleFormShow,
 }) => {
+  const dispatch = useDispatch()
+  const departments = useSelector(state => state.departments.items)
+
+  useEffect(() => {
+    dispatch(fetchDepartments())
+
+  }, [dispatch])
+
   return (
     <Section title="Факультеты" image={DepartmentIcon}>
       <GeneralCardList
-        onDeleteCard={onDeleteCard}
-        onEditCard={onEditCard}
-        listData={listData}
+
+        listData={departments}
         toggleModal={toggleModal}
         modalState={modalState}
+
       />
       {formIsOpen === FORMS.DEPARTMENT_FORM && (
         <InfoForm
           title="Добавление филиала"
           placeholder="Филиал"
-          onSubmit={onSubmit}
+          onSubmit={addDepartmentsOperatiom}
         />
       )}
 

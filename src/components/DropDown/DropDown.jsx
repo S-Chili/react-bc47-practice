@@ -2,11 +2,12 @@ import { ReactComponent as Edit } from '../../assets/images/edit.svg';
 import { ReactComponent as Delete } from '../../assets/images/delete.svg';
 import { Button, InfoForm, Modal } from '../index';
 import { ContainerDropdown, Btn, ActionsBtn } from './Dropdown.styled';
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { deleteCityOperation, editCitiesOperation } from 'store/cities/citiesOperation';
+import { deleteDepartmentsOperation, editDepartmentsOperation } from "../../store/departments/departmentsOperation"
 
 const DropDown = ({ toggleModal, relation, onEditCard, modalState, idItem, textItem }) => {
-  
+
   const dispatch = useDispatch();
 
 
@@ -18,7 +19,7 @@ const DropDown = ({ toggleModal, relation, onEditCard, modalState, idItem, textI
         <Modal
           toggleModal={toggleModal}
           title={`Редактировать информацию  ${relation === 'cities' ? 'о городе' : 'об факультете'} `}
-          children={<InfoForm idItem={idItem} textItem={textItem} relation={relation} onSubmit={editCitiesOperation} title={relation === 'cities' ? 'Город' : 'Факультет'} />}
+          children={<InfoForm idItem={idItem} textItem={textItem} relation={relation} onSubmit={relation === 'cities' ? editCitiesOperation : editDepartmentsOperation} title={relation === 'cities' ? 'Город' : 'Факультет'} toggleModal={toggleModal} />}
         />
       )}
       <Btn type='button' onClick={() => toggleModal('delete')}><Delete />удалить</Btn>
@@ -30,7 +31,7 @@ const DropDown = ({ toggleModal, relation, onEditCard, modalState, idItem, textI
           actions={
             <ActionsBtn>
               <Button text='нет' action={toggleModal} />
-              <Button text='да' action={()=> {relation === 'cities' ? dispatch(deleteCityOperation(idItem)) : console.log('department');}}  />
+              <Button text='да' action={() => { relation === 'cities' ? dispatch(deleteCityOperation(idItem)) : dispatch(deleteDepartmentsOperation(idItem)); toggleModal() }} />
             </ActionsBtn>
           }
         />

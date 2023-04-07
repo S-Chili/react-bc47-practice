@@ -4,7 +4,7 @@ import { Button } from 'components';
 import { useDispatch } from 'react-redux'
 
 
-const InfoForm = ({ placeholder, title, onSubmit, idItem, textItem, relation }) => {
+const InfoForm = ({ placeholder, title, onSubmit, idItem, textItem, relation, toggleModal }) => {
     const dispatch = useDispatch();
 
     const initialValues = {
@@ -14,9 +14,11 @@ const InfoForm = ({ placeholder, title, onSubmit, idItem, textItem, relation }) 
         name: string().required()
     })
     const handleSubmitForm = (values, { resetForm }) => {
-        console.log(values);
+
         const data = idItem ? { id: idItem, relation, name: values.name } : values.name;
+
         dispatch(onSubmit(data))
+        toggleModal()
         resetForm();
 
     }
