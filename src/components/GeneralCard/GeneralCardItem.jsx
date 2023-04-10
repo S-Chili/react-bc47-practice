@@ -34,6 +34,7 @@ const GeneralCardItem = ({
           </BtnMenu>
           {isOpen && (
             <DropDown
+              open={isOpen}
               toggleModal={toggleModal}
               relation={relation}
               onEditCard={onEditCard}
