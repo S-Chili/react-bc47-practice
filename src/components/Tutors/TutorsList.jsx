@@ -1,5 +1,4 @@
 import PT from 'prop-types';
-import { Paper } from "components";
 import TutorItem from "./TutorItem";
 
 const TutorList = ({ tutors, deleteTutor }) => {

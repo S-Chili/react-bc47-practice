@@ -1,7 +1,7 @@
 import { ReactComponent as Edit } from '../../assets/images/edit.svg';
 import { ReactComponent as Delete } from '../../assets/images/delete.svg';
-import { Button, InfoForm, Modal } from '../index';
-import { ContainerDropdown, Btn, ActionsBtn } from './Dropdown.styled';
+import { InfoForm, Modal } from '../index';
+import { ContainerDropdown, Btn } from './Dropdown.styled';
 import { useDispatch } from 'react-redux'
 import { deleteCityOperation, editCitiesOperation } from 'store/cities/citiesOperation';
 import { deleteDepartmentsOperation, editDepartmentsOperation } from "../../store/departments/departmentsOperation"

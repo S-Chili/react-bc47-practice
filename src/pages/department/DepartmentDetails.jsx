@@ -9,7 +9,8 @@ const DepartmentDetails = () => {
   const { departmentId } = useParams();
   const navigate = useNavigate();
   const departments = useSelector(state => state.departments.items)
-  const department = useMemo(() => departments.find(item => item.id === departmentId))
+  const department = useMemo(() => departments.find(item => item.id === departmentId), [departments, departmentId]);
+
   return (
     department && (
       <>
