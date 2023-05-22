@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/react-bc47-practice/static/css/main.3bae0842.css",
+    "main.js": "/react-bc47-practice/static/js/main.bf514c6e.js",
+    "static/media/cities.svg": "/react-bc47-practice/static/media/cities.7e91992755f9d3b640efb7ac8c2b6491.svg",
+    "static/media/mock-university.svg": "/react-bc47-practice/static/media/mock-university.650dfc1db07a57b5376badfdaf40c154.svg",
+    "static/media/delete.svg": "/react-bc47-practice/static/media/delete.677d38a82de5abc1f9234f87ea3bf592.svg",
+    "static/media/edit.svg": "/react-bc47-practice/static/media/edit.1ccf0f6fedc395fb09177a40acb5b5d3.svg",
+    "index.html": "/react-bc47-practice/index.html",
+    "main.3bae0842.css.map": "/react-bc47-practice/static/css/main.3bae0842.css.map",
+    "main.bf514c6e.js.map": "/react-bc47-practice/static/js/main.bf514c6e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3bae0842.css",
+    "static/js/main.bf514c6e.js"
+  ]
+}
